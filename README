@@ -7,7 +7,7 @@ the UserAgent.
 
 ==== VERSION ====
 
-This describes version ``0.40'' of Posy::Plugin::DynamicCss.
+This describes version ``0.41'' of Posy::Plugin::DynamicCss.
 
 
 ==== DESCRIPTION ====
@@ -35,8 +35,8 @@ been read, and this needs to set values before the head is rendered.
 ==   Configuration   ==
 
 This expects configuration settings in the $self->{config} hash, which, in
-the default Posy setup, can be defined in the main "config" file in the data
-directory.
+the default Posy setup, can be defined in the main "config" file in the
+config directory.
 
 This requires the Posy::Plugin::YamlConfig plugin (or equivalent), because
 the configuration variables for this plugin are not simple string values; it
@@ -45,26 +45,93 @@ expects the config values to be in a hash at $self->{config}->{dynamic_css}
 ``dynamic_css''
 A hash containing the settings.
 
-``csspath''
-Path to the subdirectory where you keep CSS files.
-
 ``default''
-The default CSS file to use when one can't figure out the browser.
+The default CSS link to use when one can't figure out the browser.
 
 ``files''
 A hash containing, for each browser, the browser string to compare against,
-and the CSS file to use if it matches.
+and the CSS link to use if it matches.
 
 Example config file:
 
         ---
         dynamic_css:
-          csspath: '/styles'
-          default: 'layout_netscape.css'
+          default: '/styles/layout_netscape.css'
           files:
-            gecko: 'layout_gecko.css'
-            'MSIE.6|MSIE.5': 'layout_msie.css'
-            'Mozilla.4' : 'layout_netscape.css'
+            gecko: '/styles/layout_gecko.css'
+            'MSIE.6|MSIE.5': '/styles/layout_msie.css'
+            'Mozilla.4' : '/styles/layout_netscape.css'
+
+
+==== INSTALLATION ====
+
+Installation needs will vary depending on the particular setup a person has.
+
+
+==   Administrator, Automatic   ==
+
+If you are the administrator of the system, then the dead simple method of
+installing the modules is to use the CPAN or CPANPLUS system.
+
+    cpanp -i Posy::Plugin::DynamicCss
+
+This will install this plugin in the usual places where modules get
+installed when one is using CPAN(PLUS).
+
+
+==   Administrator, By Hand   ==
+
+If you are the administrator of the system, but don't wish to use the
+CPAN(PLUS) method, then this is for you. Take the *.tar.gz file and untar it
+in a suitable directory.
+
+To install this module, run the following commands:
+
+    perl Build.PL
+    ./Build
+    ./Build test
+    ./Build install
+
+Or, if you're on a platform (like DOS or Windows) that doesn't like the "./"
+notation, you can do this:
+
+   perl Build.PL
+   perl Build
+   perl Build test
+   perl Build install
+
+
+==   User With Shell Access   ==
+
+If you are a user on a system, and don't have root/administrator access, you
+need to install Posy somewhere other than the default place (since you don't
+have access to it). However, if you have shell access to the system, then
+you can install it in your home directory.
+
+Say your home directory is "/home/fred", and you want to install the modules
+into a subdirectory called "perl".
+
+Download the *.tar.gz file and untar it in a suitable directory.
+
+    perl Build.PL --install_base /home/fred/perl
+    ./Build
+    ./Build test
+    ./Build install
+
+This will install the files underneath /home/fred/perl.
+
+You will then need to make sure that you alter the PERL5LIB variable to find
+the modules, and the PATH variable to find the scripts (posy_one,
+posy_static).
+
+Therefore you will need to change: your path, to include
+/home/fred/perl/script (where the script will be)
+
+        PATH=/home/fred/perl/script:${PATH}
+
+the PERL5LIB variable to add /home/fred/perl/lib
+
+        PERL5LIB=/home/fred/perl/lib:${PERL5LIB}
 
 
 ==== REQUIRES ====
